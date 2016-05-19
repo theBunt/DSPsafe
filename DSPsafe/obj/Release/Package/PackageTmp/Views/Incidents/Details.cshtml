@@ -1,0 +1,74 @@
+﻿@model DSPsafe.Models.Incident
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Incident</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StaffReportee.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StaffReportee.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WhereHappened.Region)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WhereHappened.Region)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeOfIncident)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeOfIncident)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StaffIncident)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StaffIncident)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeVisitIncident)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HomeVisitIncident)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BriefDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BriefDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOccurred)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOccurred)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IncidentId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

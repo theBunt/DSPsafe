@@ -1,0 +1,133 @@
+﻿@model IEnumerable<DSPsafe.Models.Staff>
+
+@{
+    ViewBag.Title = "SafetyOfficers";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div>
+    <h2>Find your safety contact</h2>
+    @using (Html.BeginForm("Index", "Staff", FormMethod.Get))
+    {
+        <div class="form-group">
+            @Html.Label("Select Region")
+            <div class="col-md-10">
+                @Html.DropDownList("Region", "Select Region")
+            </div>
+        </div>
+        
+
+        <div class="form-group">
+            @Html.Label("Find by Building:")
+            <div class="col-md-10">
+                @Html.DropDownList("Building", "Select Building")
+            </div>
+        </div>
+        
+
+
+        <input type="submit" value="Search" />
+
+        if (TempData["Error"] != null)
+        {
+            <p style="color: red">@TempData["Error"]</p>
+
+        }
+
+    }
+</div>
+
+<table class="table">
+    @if (Model != null)
+    {
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SafetyRole)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+
+            <th></th>
+        </tr>
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SafetyRole)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.StaffId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.StaffId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.StaffId })
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Region").change(function () {
+                $("#Building").empty();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBuildings")',
+                    dataType: 'json',
+                    data: { region: $("#Region").val() },
+                    success: function (buildingList) {
+
+                        $.each(buildingList, function (i, locale) {
+                            $("#Building").append('<option value ="'
+                            + locale.LocationId + '">'
+                                + locale.Building + ' </option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+}

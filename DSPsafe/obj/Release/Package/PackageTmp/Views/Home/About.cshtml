@@ -1,0 +1,179 @@
+﻿
+
+<!-- amCharts javascript code -->
+<script type=”text/javascript”>
+     AmCharts.ready(function(){
+       alert('page loaded');
+    });</script>
+
+@*<script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "pie",
+            "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+            "titleField": "category",
+            "valueField": "column-1",
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "align": "center",
+                "markerType": "circle"
+            },
+            "titles": [],
+            "dataProvider": [
+                {
+                    "category": "Assault",
+                    "column-1": 8
+                },
+                {
+                    "category": "Slip / Trip / Fall",
+                    "column-1": 6
+                },
+                {
+                    "category": "Threat",
+                    "column-1": 2
+                },
+                {
+                    "category": "Fire",
+                    "column-1": "8"
+                }
+            ]
+        }
+    );
+</script>*@
+
+<script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "pie",
+            "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+            "titleField": "typeInc",
+            "valueField": "countOf",
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "align": "center",
+                "markerType": "circle"
+            },
+            "titles": [],
+            "dataLoader": {
+                "url": '@Url.Action("GetData")',
+                "format": "json"
+            }
+        }
+    );
+    alert('pie chart');
+</script>
+
+<script type="text/javascript">
+    AmCharts.makeChart("chartRegion",
+				{
+					"type": "serial",
+					"categoryField": "category",
+					"startDuration": 1,
+					"theme": "default",
+					"categoryAxis": {
+					    "classNameField": "[[Region]]",
+					    "gridPosition": "start",
+					    "fillAlpha": 0.02,
+					    "gridAlpha": 0.01,
+					    "title": "Breakdown of Incidents by Region"
+					},
+					"trendLines": [],
+					"graphs": [
+						{
+							"balloonText": "[[title]] :[[value]]",
+							"fillAlphas": 1,
+							"id": "AmGraph-1",
+							"title": "Assault",
+							"type": "column",
+							"valueField": "countAssault"
+						},
+						{
+							"balloonText": "[[title]] :[[value]]",
+							"fillAlphas": 1,
+							"id": "AmGraph-2",
+							"title": "Threat",
+							"type": "column",
+							"valueField": "countThreat"
+						},
+						{
+							"balloonText": "[[title]] :[[value]]",
+							"fillAlphas": 1,
+							"id": "AmGraph-3",
+							"title": "Slip",
+							"type": "column",
+							"valueField": "countSlip"
+						},
+						{
+							"balloonText": "[[title]] :[[value]]",
+							"fillAlphas": 1,
+							"id": "AmGraph-4",
+							"title": "Manual Handling",
+							"type": "column",
+							"valueField": "countManual"
+						},
+						{
+							"balloonText": "[[title]] :[[value]]",
+							"fillAlphas": 1,
+							"fillColors": "#9400D3",
+							"id": "AmGraph-6",
+							"title": "Damage",
+							"type": "column",
+							"valueField": "countDamage"
+						}
+					],
+					"guides": [],
+					"valueAxes": [
+						{
+							"id": "ValueAxis-1",
+							"stackType": "regular",
+							"title": "Incidents"
+						}
+					],
+					"allLabels": [],
+					"balloon": {
+						"animationDuration": 0.34,
+						"fadeOutDuration": 0.26,
+						"fillAlpha": 0.96
+					},
+					"legend": {
+						"enabled": true,
+						"useGraphSettings": true
+					},
+					"titles": [
+						{
+							"alpha": 0,
+							"id": "Title-1",
+							"size": 15,
+							"text": "Breakdown of incidents"
+						}
+					],
+					"dataLoader": {
+					    "url": '@Url.Action("GetBreakdown")',
+					    "format": "json"
+					}
+				}
+			);
+</script>
+
+
+
+@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>Use this area to provide additional information.</p>
+
+
+
+<h2>Chart</h2>
+
+
+<div id="chartdiv" style="width: 640px; height: 400px;"></div>
+
+<div id="chartRegion" style="width: 640px; height: 400px;"></div>

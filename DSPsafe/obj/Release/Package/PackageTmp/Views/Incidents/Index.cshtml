@@ -1,0 +1,221 @@
+﻿@model IEnumerable<DSPsafe.Models.Incident>
+    
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Incident Report Page</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+<div class="row">
+    <div class="col-sm-8">
+        <button id="pieBtn" type="button" class="btn btn-info btn-block" onclick="viewPie()">CLICK HERE to view Incidents Pie Chart</button>
+        <div id="chartdiv" style="width: 640px; height: 400px;" hidden></div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-8">
+        <button id="barBtn" type="button" class="btn btn-info btn-block" onclick="viewBar()">CLICK HERE to view Regional Breakdown Chart</button>
+        <div id="chartRegion" style="width: 640px; height: 400px;" hidden></div>
+    </div>
+</div>
+<br />
+<div>
+    <button id="tableBtn" type="button" class="btn btn-info btn-block" onclick="viewTable()">CLICK HERE to view Table of Incidents</button>
+    <br />
+    <div id="IncTable" hidden>
+    @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
+    {
+        <p>
+            Filter by Region: @Html.TextBox("SearchStringRegion")
+            Filter by type: @Html.TextBox("SearchStringtype")
+
+            <input type="submit" value="Search" />
+            @if (TempData["Error"] != null)
+            {
+            <p style="color:red">@TempData["Error"]</p>
+
+            }
+            </p>
+    }
+
+    <table id="IncidentTable " class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffReportee.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhereHappened.Region)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeOfIncident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffIncident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomeVisitIncident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BriefDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOccurred)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffReportee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WhereHappened.Region)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeOfIncident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffIncident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeVisitIncident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BriefDesc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOccurred)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<script type="text/javascript">
+    AmCharts.makeChart("chartdiv",
+        {
+            "type": "pie",
+            "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+            "titleField": "typeInc",
+            "valueField": "countOf",
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "align": "center",
+                "markerType": "circle"
+            },
+            "titles": [],
+            "dataLoader": {
+                "url": '@Url.Action("GetData")',
+                "format": "json"
+            }
+        }
+    );
+    alert('pie chart');
+</script>
+
+<script type="text/javascript">
+    AmCharts.makeChart("chartRegion",
+                {
+                    "type": "serial",
+                    "categoryField": "category",
+                    "startDuration": 1,
+                    "theme": "default",
+                    "categoryAxis": {
+                        "classNameField": "[[Region]]",
+                        "gridPosition": "start",
+                        "fillAlpha": 0.02,
+                        "gridAlpha": 0.01,
+                        "title": "Breakdown of Incidents by Region"
+                    },
+                    "trendLines": [],
+                    "graphs": [
+                        {
+                            "balloonText": "[[title]] :[[value]]",
+                            "fillAlphas": 1,
+                            "id": "AmGraph-1",
+                            "title": "Assault",
+                            "type": "column",
+                            "valueField": "countAssault"
+                        },
+                        {
+                            "balloonText": "[[title]] :[[value]]",
+                            "fillAlphas": 1,
+                            "id": "AmGraph-2",
+                            "title": "Threat",
+                            "type": "column",
+                            "valueField": "countThreat"
+                        },
+                        {
+                            "balloonText": "[[title]] :[[value]]",
+                            "fillAlphas": 1,
+                            "id": "AmGraph-3",
+                            "title": "Slip",
+                            "type": "column",
+                            "valueField": "countSlip"
+                        },
+                        {
+                            "balloonText": "[[title]] :[[value]]",
+                            "fillAlphas": 1,
+                            "id": "AmGraph-4",
+                            "title": "Manual Handling",
+                            "type": "column",
+                            "valueField": "countManual"
+                        },
+                        {
+                            "balloonText": "[[title]] :[[value]]",
+                            "fillAlphas": 1,
+                            "fillColors": "#9400D3",
+                            "id": "AmGraph-6",
+                            "title": "Damage",
+                            "type": "column",
+                            "valueField": "countDamage"
+                        }
+                    ],
+                    "guides": [],
+                    "valueAxes": [
+                        {
+                            "id": "ValueAxis-1",
+                            "stackType": "regular",
+                            "title": "Incidents"
+                        }
+                    ],
+                    "allLabels": [],
+                    "balloon": {
+                        "animationDuration": 0.34,
+                        "fadeOutDuration": 0.26,
+                        "fillAlpha": 0.96
+                    },
+                    "legend": {
+                        "enabled": true,
+                        "useGraphSettings": true
+                    },
+                    "titles": [
+                        {
+                            "alpha": 0,
+                            "id": "Title-1",
+                            "size": 15,
+                            "text": "Breakdown of incidents"
+                        }
+                    ],
+                    "dataLoader": {
+                        "url": '@Url.Action("GetBreakdown")',
+                        "format": "json"
+                    }
+                }
+            );
+</script>

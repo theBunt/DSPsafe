@@ -1,0 +1,104 @@
+﻿/*.carousel-fade {
+    .carousel-inner {
+        .item {
+            transition-property: opacity;
+        }
+        
+        .item,
+        .active.left,
+        .active.right {
+            opacity: 0;
+        }
+
+        .active,
+        .next.left,
+        .prev.right {
+            opacity: 1;
+        }
+
+        .next,
+        .prev,
+        .active.left,
+        .active.right {
+            left: 0;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .carousel-control {
+        z-index: 2;
+    }
+}
+
+
+
+html, 
+body, 
+.carousel, 
+.carousel-inner, 
+.carousel-inner .item {
+    height: 100%;
+}
+
+.item:nth-child(1) {
+    background: #74C390;
+    background-image: url("~/Images/officeClouds.jpg");
+}
+
+.item:nth-child(2) {
+    background: #51BCE8;
+    background-image: url("~/Images/~/Images/safetyFirst.jpe");
+}
+
+.item:nth-child(3) {
+    background: #E46653;
+    background-image: url("~/Images/~/Images/reportBanner.jpe");
+}*/
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.navbar-default.transparent {
+    background-color: transparent;
+}
+.slide1, .slide2, .slide3 {
+    min-height: 360px;
+    background-size: cover;
+    background-position: center center;
+}
+.slide1 {   
+    background-image: url('../Images/officeClouds.jpg');
+}
+.slide2 {
+    background-image: url('../Images/safetyBanner.jpg');
+}
+.slide3 {
+    background-image: url('../Images/reportBanner.jpg');
+}
+/* Carousel Fade Effect */
+.carousel.carousel-fade .item {
+    -webkit-transition: opacity 2s linear;
+    -moz-transition: opacity 2s linear;
+    -ms-transition: opacity 2s linear;
+    -o-transition: opacity 2s linear;
+    transition: opacity 2s linear;
+    opacity: .5;
+}
+.carousel.carousel-fade .active.item {
+    opacity: 1;
+}
+.carousel.carousel-fade .active.left,
+.carousel.carousel-fade .active.right {
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.carousel-overlay {
+    position: absolute;
+    bottom: 100px;
+    right: 0;
+    left: 0;
+}
