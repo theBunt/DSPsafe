@@ -10,38 +10,54 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<div>
-    <h2>Find your safety contact</h2>
+
+    
     @using (Html.BeginForm("Index", "Staff", FormMethod.Get))
     {
-        <div class="form-group">
-            @Html.Label("Select Region")
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Region", "Select Region")
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
-        </div>
-        
-
-        <div class="form-group">
-            @Html.Label("Find by Building:")
-            <div class="col-md-10">
-                @Html.DropDownList("Building", "Select Building")
+        </div>*@
+        <div class="form-horizontal">
+            <h2>Find your safety contact</h2>
+            <div class="form-group">
+                @Html.Label("Select your Region:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.DropDownList("Region", "Select Region")*@
+                    @Html.DropDownList("Region", (IEnumerable<SelectListItem>)ViewBag.Region, "choose region...", new { @class = "form-control" })
+                </div>
             </div>
+
+
+            
+                <div class="form-group ">
+                    @Html.Label("Find by Building:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.DropDownList("Building", "Select Building")*@
+                        @Html.DropDownList("Building", (IEnumerable<SelectListItem>)ViewBag.Building, "choose building...", new { @class = "form-control" })
+                        <br /><input type="submit" value="Search" />
+                    </div>
+                   
+                </div>
+            
+
+           
         </div>
-        
 
-
-        <input type="submit" value="Search" />
-
-        if (TempData["Error"] != null)
-        {
+                @*if (TempData["Error"] != null)
+            {
             <p style="color: red">@TempData["Error"]</p>
 
-        }
+            }
 
-    }
-</div>
-
+            }*@
+      
+         }   
+            
+    
 <table class="table">
     @if (Model != null)
     {

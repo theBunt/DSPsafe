@@ -27,7 +27,7 @@ namespace DSPsafe.Controllers
                                               new{ID="West",Name="West"}
                                           },
                             "ID", "Name", "Select Region");
-            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Building");
+            ViewBag.Building = new SelectList(db.Locations.Where(i => i.Region.Equals(Region)), "LocationId", "Building");
              //ViewBag.Building = new SelectList(null, "LocationId", "Building");
 
 

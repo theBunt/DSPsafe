@@ -25,14 +25,22 @@ namespace DSPsafe.Controllers
                                           },
                             "ID", "Name", 1);
 
+        private SelectList regions = new SelectList(new[]
+                                          {
+                                              new {ID="North",Name="North"},
+                                              new{ID="South",Name="South"},
+                                              new{ID="East",Name="East"},
+                                              new{ID="West",Name="West"}
+                                      },
+                        "ID", "Name", 1);
+
         // GET: Incidents
         public ActionResult Index(string sortOrder, string searchStringRegion, string searchStringType)
         {
 
             var incidents = db.Incidents.Include(i => i.StaffReportee).Include(i => i.WhereHappened);
-
-            ViewBag.FilterRegion = searchStringRegion;
-            ViewBag.FilterType = searchStringType;
+            ViewBag.searchStringRegion = regions;
+            ViewBag.searchStringType = types;
             ViewBag.NameSort = sortOrder == "Name" ? "name_desc" : "Name";
             ViewBag.DateSort = String.IsNullOrEmpty(sortOrder) ? "Date_desc" : "";
 
@@ -50,7 +58,7 @@ namespace DSPsafe.Controllers
                     break;
                 default:
                     incidents = incidents.OrderBy(i => i.DateOccurred);
-                        break;
+                    break;
             }
 
             var searchString = "";
@@ -68,7 +76,7 @@ namespace DSPsafe.Controllers
             }
             else if (!String.IsNullOrEmpty(searchStringRegion) && !String.IsNullOrEmpty(searchStringType))
             {
-                searchString = (searchStringRegion + "," + searchStringType).ToString(); ;
+                searchString = (searchStringRegion + "," + searchStringType).ToString(); 
                 searchType = 3;
             }
 
@@ -102,7 +110,7 @@ namespace DSPsafe.Controllers
                     break;
 
                 case 3:
-                    incidents = incidents.Where(i => i.TypeOfIncident.Equals(searchStringType) && (i.TypeOfIncident.Equals(searchStringType)));
+                    incidents = incidents.Where(i => i.WhereHappened.Region.Equals(searchStringRegion) && (i.TypeOfIncident.Equals(searchStringType)));
                     break;
             }
             return View(incidents.ToList());
