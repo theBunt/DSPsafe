@@ -7,9 +7,9 @@
 
 <h2>Incident Report Page</h2>
 
-@*<p>
+<p>
         @Html.ActionLink("Create New", "Create")
-    </p>*@
+    </p>
 
 <div class="row">
     <div class="col-sm-8">
@@ -32,8 +32,10 @@
     @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
     {
         <p>
-            Filter by Region: @Html.TextBox("SearchStringRegion")
-            Filter by type: @Html.TextBox("SearchStringtype")
+            @*Filter by Region: @Html.TextBox("SearchStringRegion")*@
+            @Html.DropDownList("searchStringRegion", "Select region...")
+            @*Filter by type: @Html.TextBox("SearchStringtype")*@
+            @Html.DropDownList("searchStringType", "Select type...")
 
             <input type="submit" value="Search" />
             @if (TempData["Error"] != null)
@@ -47,7 +49,8 @@
     <table id="IncidentTable " class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StaffReportee.LastName)
+                @*@Html.DisplayNameFor(model => model.StaffReportee.LastName)*@
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSort })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.WhereHappened.Region)
@@ -61,11 +64,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.HomeVisitIncident)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.BriefDesc)
-            </th>
+            </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.DateOccurred)
+                @*@Html.DisplayNameFor(model => model.DateOccurred)*@
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
             </th>
             <th></th>
         </tr>
@@ -88,9 +92,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.HomeVisitIncident)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.BriefDesc)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.DateOccurred)
                 </td>
@@ -125,7 +129,7 @@
             }
         }
     );
-    alert('pie chart');
+    
 </script>
 
 <script type="text/javascript">

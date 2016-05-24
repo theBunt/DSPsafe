@@ -2,14 +2,14 @@
     
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Incidents";
 }
 
 <h2>Incident Report Page</h2>
 
-@*<p>
+<p>
         @Html.ActionLink("Create New", "Create")
-    </p>*@
+    </p>
 
 <div class="row">
     <div class="col-sm-8">
@@ -28,7 +28,7 @@
 <div>
     <button id="tableBtn" type="button" class="btn btn-info btn-block" onclick="viewTable()">CLICK HERE to view Table of Incidents</button>
     <br />
-    <div id="IncTable" hidden>
+    <div id="IncTable" >
     @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
     {
         <p>
@@ -46,67 +46,68 @@
             </p>
     }
 
-    <table id="IncidentTable " class="table">
-        <tr>
-            <th>
-                @*@Html.DisplayNameFor(model => model.StaffReportee.LastName)*@
-                @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSort })
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WhereHappened.Region)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TypeOfIncident)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StaffIncident)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HomeVisitIncident)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.BriefDesc)
-            </th>*@
-            <th>
-                @*@Html.DisplayNameFor(model => model.DateOccurred)*@
-                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-            {
+        <table id="IncidentTable " class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StaffReportee.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WhereHappened.Region)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TypeOfIncident)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StaffIncident)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HomeVisitIncident)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.BriefDesc)
-                </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateOccurred)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })
-                </td>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.StaffReportee.LastName)*@
+                    @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSort })
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WhereHappened.Region)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TypeOfIncident)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffIncident)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomeVisitIncident)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.BriefDesc)
+                </th>*@
+                <th>
+                    @*@Html.DisplayNameFor(model => model.DateOccurred)*@
+                    @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffReportee.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WhereHappened.Region)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TypeOfIncident)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffIncident)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeVisitIncident)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.BriefDesc)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOccurred)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })
+                    </td>
+                </tr>
+            }
+           
+        </table>
+        @Html.ActionLink("Print", "GeneratePDF")
 </div>
 <script type="text/javascript">
     AmCharts.makeChart("chartdiv",
@@ -129,7 +130,7 @@
             }
         }
     );
-    alert('pie chart');
+    
 </script>
 
 <script type="text/javascript">

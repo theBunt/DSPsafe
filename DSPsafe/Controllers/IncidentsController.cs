@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using DSPsafe.DAL;
 using DSPsafe.Models;
+using System.Net.Mail;
 
 namespace DSPsafe.Controllers
 {
@@ -20,7 +21,7 @@ namespace DSPsafe.Controllers
                                               new {ID="Damage",Name="Damage"},
                                               new{ID="Assault",Name="Assault"},
                                               new{ID="Threat",Name="Threat"},
-                                              new {ID="Slip/Trip/Fall",Name="Slip/Trip/Fall"},
+                                              new {ID="Slip",Name="Slip/Trip/Fall"},
                                               new{ID="Manual Handling",Name="Manual Handling"}
                                           },
                             "ID", "Name", 1);
@@ -136,16 +137,10 @@ namespace DSPsafe.Controllers
         {
             ViewBag.TypeOfIncident = types;
             ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName");
-            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Region");
-            ViewBag.Region = new SelectList(new[]
-                                          {
-                                              new {ID="North",Name="North"},
-                                              new{ID="South",Name="South"},
-                                              new{ID="East",Name="East"},
-                                              new{ID="West",Name="West"}
-                                          },
-                            "ID", "Name", 1);
-            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Building");
+
+            ViewBag.Region = regions;
+            
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Building");
             return View();
         }
 
@@ -154,18 +149,20 @@ namespace DSPsafe.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,StaffId,LocationId")] Incident incident)
-        public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,LocationId")] Incident incident)
+        public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,StaffId,LocationId")] Incident incident)
+        //public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,LocationId")] Incident incident)
         {
             if (ModelState.IsValid)
             {
                 db.Incidents.Add(incident);
+                sendEmail("Harry", incident);
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName", incident.StaffId);
-            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Region", incident.LocationId);
+            //ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName", incident.StaffId);
+            //ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Region", incident.LocationId);
 
 
             return View(incident);
@@ -466,5 +463,44 @@ namespace DSPsafe.Controllers
             return Json(emptyList, JsonRequestBehavior.AllowGet);
 
         }
+
+        public string sendEmail(string mail, Incident reported)
+        {
+            MailMessage msg = new MailMessage();
+
+            msg.From = new MailAddress("YourMail@gmail.com");
+            msg.To.Add("buntmcbunt@gmail.com");
+            msg.Subject = "Health & Safety Incident reported" + DateTime.Now.ToString();
+            //msg.Body = "To whom it concerns, " + reported.StaffReportee.FirstName + " " + reported.StaffReportee.LastName + " reported an incident of type " + reported.TypeOfIncident+ ". The incident occurred at " + reported.WhereHappened.Building + ".";
+            msg.Body = "To whom it concerns, An incident of type " + reported.TypeOfIncident + " has occurred.";
+            msg.Priority = MailPriority.High;
+            SmtpClient client = new SmtpClient();
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+            client.EnableSsl = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("javabraybowl@gmail.com", "DanoBucko");
+            client.Timeout = 20000;
+            try
+            {
+                client.Send(msg);
+                return "Mail has been successfully sent!";
+            }
+            catch (Exception ex)
+            {
+                return "Fail Has error" + ex.Message;
+            }
+            finally
+            {
+                msg.Dispose();
+            }
+        }
+
+        public ActionResult GeneratePDF()
+        {
+            return new Rotativa.ActionAsPdf("Index");
+        }
+
     }
 }

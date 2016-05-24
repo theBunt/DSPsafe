@@ -79,6 +79,7 @@ namespace DSPsafe.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        //bang in public virtual Staff
     }
 
     public class ResetPasswordViewModel

@@ -50,6 +50,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -563,13 +567,21 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="amcharts\plugins\export\libs\pdfmake\pdfmake.min.map" />
     <Content Include="amcharts\plugins\export\libs\fabric.js\.travis.yml" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\safetyDSP - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\icons\damage.png" />
+    <Content Include="Images\icons\fall.jpg" />
+    <Content Include="Images\icons\fireIcon.png" />
+    <Content Include="Images\icons\assaultIcon.png" />
+    <Content Include="Images\icons\manHandling.png" />
+    <Content Include="Images\icons\threatIcon.jpg" />
     <Content Include="Images\officeClouds.jpg" />
     <Content Include="Images\reportBanner.jpg" />
     <Content Include="Images\safetyBanner.jpg" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\JavaScriptEffects.js" />
