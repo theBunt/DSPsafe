@@ -37,7 +37,7 @@
                     @Html.Label("Find by Building:", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @*@Html.DropDownList("Building", "Select Building")*@
-                        @Html.DropDownList("LocationId", (IEnumerable<SelectListItem>)ViewBag.Building, "choose building...", new { @class = "form-control" })
+                        @Html.DropDownList("Building", (IEnumerable<SelectListItem>)ViewBag.Building, "choose building...", new { @class = "form-control" })
                         <br /><input type="submit" value="Search" />
                     </div>
                    
