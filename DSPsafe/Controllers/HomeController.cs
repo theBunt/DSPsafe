@@ -14,7 +14,8 @@ namespace DSPsafe.Controllers
 
     {
 
-        private SafetyContext db = new SafetyContext();
+        //private SafetyContext db = new SafetyContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {

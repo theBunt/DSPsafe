@@ -3,12 +3,15 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DSPsafe.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public int? StaffId { get; internal set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -30,11 +33,20 @@ namespace DSPsafe.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<DSPsafe.Models.Incident> Incidents { get; set; }
+        //public System.Data.Entity.DbSet<DSPsafe.Models.Incident> Incidents { get; set; }
 
-        public System.Data.Entity.DbSet<DSPsafe.Models.Staff> Staffs { get; set; }
+        //public System.Data.Entity.DbSet<DSPsafe.Models.Staff> Staffs { get; set; }
 
-        public System.Data.Entity.DbSet<DSPsafe.Models.Location> Locations { get; set; }
-        public object Staff { get; internal set; }
+        //public System.Data.Entity.DbSet<DSPsafe.Models.Location> Locations { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<Incident> Incidents { get; set; }
+        public DbSet<Location> Locations { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+        }
     }
 }

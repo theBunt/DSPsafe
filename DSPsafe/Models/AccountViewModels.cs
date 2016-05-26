@@ -60,6 +60,8 @@ namespace DSPsafe.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        public virtual Staff Staff { get; set; }
     }
 
     public class RegisterViewModel

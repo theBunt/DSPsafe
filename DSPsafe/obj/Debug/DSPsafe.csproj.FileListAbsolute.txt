@@ -1,6 +1,4 @@
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.csprojResolveAssemblyReference.cache
-C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.Migrations.InitialCreate.resources
-C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.csproj.GenerateResource.Cache
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\roslyn\csc.exe
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -69,3 +67,5 @@ C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Microsof
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.dll
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.pdb
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.Migrations.Reset.resources
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.csproj.GenerateResource.Cache

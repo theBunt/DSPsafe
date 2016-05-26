@@ -13,7 +13,8 @@ namespace DSPsafe.Controllers
 {
     public class IncidentsController : Controller
     {
-        private SafetyContext db = new SafetyContext();
+        //private SafetyContext db = new SafetyContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         private SelectList types = new SelectList(new[]
                                           {

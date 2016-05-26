@@ -13,7 +13,8 @@ namespace DSPsafe.Controllers
 {
     public class LocationsController : Controller
     {
-        private SafetyContext db = new SafetyContext();
+        //private SafetyContext db = new SafetyContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Locations
         public ActionResult Index()

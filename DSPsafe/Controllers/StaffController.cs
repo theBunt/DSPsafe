@@ -13,7 +13,8 @@ namespace DSPsafe.Controllers
 {
     public class StaffController : Controller
     {
-        private SafetyContext db = new SafetyContext();
+        //private SafetyContext db = new SafetyContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Staff
         public ActionResult Index(string Region, string Building)
