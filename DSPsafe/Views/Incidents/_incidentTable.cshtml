@@ -1,0 +1,102 @@
+﻿@*@model DSPsafe.Models.Incident*@
+
+@model IEnumerable<DSPsafe.Models.Incident>
+
+@*@if (User.IsInRole("Manager"))
+    {*@
+
+<button id="tableBtn" type="button" class="btn btn-info btn-block" onclick="viewTable()">CLICK HERE to view Table of Incidents</button>
+<br />
+
+
+<div id="IncTable">
+    @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
+    {
+        <p>
+            @*Filter by Region: @Html.TextBox("SearchStringRegion")*@
+            @if (ViewData["searchStringRegion"] != null)
+            {
+                @Html.DropDownList("searchStringRegion", "Select region...")
+            }
+            @*Filter by type: @Html.TextBox("SearchStringtype")*@
+
+            @if (ViewData["searchStringType"] != null)
+            {
+                @Html.DropDownList("searchStringType", "Select type...")
+            }
+            <input type="submit" value="Search" />
+            @*@if (TempData["Error"] != null)
+                {
+                <p style="color:red">@TempData["Error"]</p>
+
+                }*@
+        </p>
+    }
+
+    <table id="IncidentTable " class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.StaffReportee.LastName)*@
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSort })
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhereHappened.Region)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeOfIncident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffIncident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomeVisitIncident)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.BriefDesc)
+                </th>*@
+            <th>
+                @*@Html.DisplayNameFor(model => model.DateOccurred)*@
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffReportee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WhereHappened.Region)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeOfIncident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffIncident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeVisitIncident)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.BriefDesc)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOccurred)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @Html.ActionLink("Print", "DownloadPartialViewPDF")
+
+</div>
+@*}*@
+

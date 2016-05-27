@@ -21,7 +21,7 @@ namespace DSPsafe
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DbInterception.Add(new SafetyInterceptorTransientErrors());
             DbInterception.Add(new SafetyInterceptorLogging());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SafetyContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<SafetyContext>());
         }
     }
 }

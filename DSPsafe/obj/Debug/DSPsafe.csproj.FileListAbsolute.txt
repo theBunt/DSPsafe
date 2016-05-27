@@ -69,3 +69,4 @@ C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DS
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.pdb
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.Migrations.Reset.resources
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.csproj.GenerateResource.Cache
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Rotativa.dll

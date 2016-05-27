@@ -50,6 +50,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -187,6 +191,10 @@
     <Compile Include="Migrations\201605262141443_Reset.cs" />
     <Compile Include="Migrations\201605262141443_Reset.Designer.cs">
       <DependentUpon>201605262141443_Reset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605272237347_Users.cs" />
+    <Compile Include="Migrations\201605272237347_Users.Designer.cs">
+      <DependentUpon>201605272237347_Users.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -563,6 +571,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="amcharts\plugins\export\libs\pdfmake\pdfmake.min.map" />
     <Content Include="amcharts\plugins\export\libs\fabric.js\.travis.yml" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\safetyDSP - Web Deploy.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -575,6 +584,7 @@
     <Content Include="Images\officeClouds.jpg" />
     <Content Include="Images\reportBanner.jpg" />
     <Content Include="Images\safetyBanner.jpg" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\JavaScriptEffects.js" />
@@ -643,6 +653,7 @@
     <Content Include="Views\Incidents\Edit.cshtml" />
     <Content Include="Views\Incidents\Index.cshtml" />
     <Content Include="Views\Incidents\Chart.cshtml" />
+    <Content Include="Views\Incidents\_incidentTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -655,6 +666,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201605262141443_Reset.resx">
       <DependentUpon>201605262141443_Reset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605272237347_Users.resx">
+      <DependentUpon>201605272237347_Users.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

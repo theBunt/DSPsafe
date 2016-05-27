@@ -4,13 +4,13 @@
     ViewBag.Title = "SafetyOfficers";
 }
 
-<h2>Index</h2>
+<h2>Find your safety contact</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 
-
+<p>Find out who is looking after your safety.<br /> Just select your region and building below to view your safety representatives.</p>
     
     @using (Html.BeginForm("Index", "Staff", FormMethod.Get))
     {
@@ -22,7 +22,7 @@
             </div>
         </div>*@
         <div class="form-horizontal">
-            <h2>Find your safety contact</h2>
+           
             <div class="form-group">
                 @Html.Label("Select your Region:", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">

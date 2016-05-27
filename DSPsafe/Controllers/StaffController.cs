@@ -19,7 +19,7 @@ namespace DSPsafe.Controllers
         // GET: Staff
         public ActionResult Index(string Region, string Building)
         {
-            
+
             ViewBag.Region = new SelectList(new[]
                                           {
                                               new {ID="North",Name="North"},
@@ -29,11 +29,11 @@ namespace DSPsafe.Controllers
                                           },
                             "ID", "Name", "Select Region");
             ViewBag.Building = new SelectList(db.Locations.Where(i => i.Region.Equals(Region)), "LocationId", "Building");
-             //ViewBag.Building = new SelectList(null, "LocationId", "Building");
+            //ViewBag.Building = new SelectList(null, "LocationId", "Building");
 
 
             if (!String.IsNullOrEmpty(Building))
-                {
+            {
                 var staff = from s in db.Staff select s;
 
                 int locId = int.Parse(Building);
@@ -41,7 +41,7 @@ namespace DSPsafe.Controllers
 
                 return View(staff.ToList());
             }
-            
+
             return View();
         }
 
@@ -91,6 +91,7 @@ namespace DSPsafe.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Staff staff = db.Staff.Find(id);
+
             if (staff == null)
             {
                 return HttpNotFound();
@@ -105,6 +106,13 @@ namespace DSPsafe.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "StaffId,LastName,FirstName,Email,EmpType,Phone,SafetyRole,Area")] Staff staff)
         {
+            ViewBag.Role = new SelectList(new[]
+                                          {
+                                              new{ID="Fire Marshal",Name="Fire Marshal"},
+                                              new {ID="First Aid",Name="First Aid"},
+                                              new {ID="Safety Rep",Name="West"}
+                                          },
+                            "ID", "Name", "Select Role");
             if (ModelState.IsValid)
             {
                 db.Entry(staff).State = EntityState.Modified;
@@ -153,7 +161,7 @@ namespace DSPsafe.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;
             var query = from d in db.Locations
-                            where d.Region.Equals(region)
+                        where d.Region.Equals(region)
                         //where d.LocationId == region
                         select d;
 

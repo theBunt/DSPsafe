@@ -2,7 +2,7 @@
 
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Incidents";
 }
 
 <h2>Incident Report Page</h2>
@@ -11,50 +11,43 @@
         @Html.ActionLink("Create New", "Create")
     </p>*@
 
-<div class="row">
-    <div class="col-sm-8">
-        <button id="pieBtn" type="button" class="btn btn-info btn-block" onclick="viewPie()">CLICK HERE to view Incidents Pie Chart</button>
-        <div id="chartdiv" style="width: 640px; height: 400px;" hidden></div>
-    </div>
-</div>
-<br />
-<div class="row">
-    <div class="col-sm-8">
-        <button id="barBtn" type="button" class="btn btn-info btn-block" onclick="viewBar()">CLICK HERE to view Regional Breakdown Chart</button>
-        <div id="chartRegion" style="width: 640px; height: 400px;" hidden></div>
-    </div>
-</div>
-<br />
 
-@*@if (User.IsInRole("Manager"))
-{*@
+
+@*<div>
+     @Html.Partial("_incidentTable", Model.AsEnumerable())
+</div>*@
+
+@if (!User.IsInRole("Manager"))
+{
 
     <button id="tableBtn" type="button" class="btn btn-info btn-block" onclick="viewTable()">CLICK HERE to view Table of Incidents</button>
     <br />
 
 
-    <div id="IncTable" hidden>
+    <div id="IncTable">
         @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
         {
             <p>
-                @*Filter by Region: @Html.TextBox("SearchStringRegion")*@
-                @Html.DropDownList("searchStringRegion", "Select region...")
-                @*Filter by type: @Html.TextBox("SearchStringtype")*@
-                @Html.DropDownList("searchStringType", "Select type...")
+                @*@Html.DropDownList("searchStringRegion", "Select region...")*@
+                @Html.DropDownList("searchStringRegion", (IEnumerable<SelectListItem>)ViewBag.Region, "Choose region...", new { @class = "form-control" }) <br />
+
+                @*@Html.DropDownList("searchStringType", "Select type...")*@
+                @Html.DropDownList("searchStringType", (IEnumerable<SelectListItem>)ViewBag.Type, "Choose type...", new { @class = "form-control" }) <br />
 
                 <input type="submit" value="Search" />
-                @if (TempData["Error"] != null)
+            </p>
+                @*@if (TempData["Error"] != null)
                     {
                 <p style="color:red">@TempData["Error"]</p>
 
-                }
-                </p>
+                }*@
+                
         }
 
         <table id="IncidentTable " class="table">
             <tr>
                 <th>
-                    @*@Html.DisplayNameFor(model => model.StaffReportee.LastName)*@
+                   
                     @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSort })
                 </th>
                 <th>
@@ -69,11 +62,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.HomeVisitIncident)
                 </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.BriefDesc)
-                    </th>*@
+               
                 <th>
-                    @*@Html.DisplayNameFor(model => model.DateOccurred)*@
+                   
                     @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
                 </th>
                 <th></th>
@@ -97,16 +88,14 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.HomeVisitIncident)
                     </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.BriefDesc)
-                        </td>*@
+                   
                     <td>
                         @Html.DisplayFor(modelItem => item.DateOccurred)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |*@
+                        @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) 
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })*@
                     </td>
                 </tr>
             }
@@ -116,8 +105,57 @@
         @Html.ActionLink("Print", "GeneratePDF")
 
     </div>
-@*}*@
-<script type="text/javascript">
+}
+
+<div class="row">
+    <div class="col-sm-8">
+        <div id="chartdiv" style="width: 640px; height: 400px;" hidden></div>
+        <button id="pieBtn" type="button" class="btn btn-info btn-block" onclick="viewPie()">CLICK HERE to view Incidents Pie Chart</button>
+       
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-8">
+        <div id="chartRegion" style="width: 640px; height: 400px;" hidden></div>
+        <button id="barBtn" type="button" class="btn btn-info btn-block" onclick="viewBar()">CLICK HERE to view Regional Breakdown Chart</button>
+        
+    </div>
+</div>
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Region").change(function () {
+                $("#Building").empty();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBuildings")',
+                    dataType: 'json',
+                    data: { region: $("#Region").val() },
+                    success: function (buildingList) {
+
+                        $.each(buildingList, function (i, locale) {
+                            $("#Building").append('<option value ="'
+                            + locale.LocationId + '">'
+                                + locale.Building + ' </option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+}
+
+@*<script type="text/javascript">
     AmCharts.makeChart("chartdiv",
         {
             "type": "pie",
@@ -138,11 +176,10 @@
             }
         }
     );
-    alert('pie chart');
-</script>
+</script>*@
 
 <script type="text/javascript">
-    AmCharts.makeChart("chartRegion",
+    @*AmCharts.makeChart("chartRegion",
                 {
                     "type": "serial",
                     "categoryField": "category",
@@ -230,5 +267,5 @@
                         "format": "json"
                     }
                 }
-            );
+            );*@
 </script>

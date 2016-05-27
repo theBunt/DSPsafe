@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using DSPsafe.DAL;
 using DSPsafe.Models;
+using System.Net.Mail;
 
 namespace DSPsafe.Controllers
 {
@@ -32,16 +33,17 @@ namespace DSPsafe.Controllers
                                               new{ID="South",Name="South"},
                                               new{ID="East",Name="East"},
                                               new{ID="West",Name="West"}
-                                      },
-                        "ID", "Name", 1);
+                                          },
+                            "ID", "Name", "Select Region");
+
 
         // GET: Incidents
         public ActionResult Index(string sortOrder, string searchStringRegion, string searchStringType)
         {
 
             var incidents = db.Incidents.Include(i => i.StaffReportee).Include(i => i.WhereHappened);
-            ViewBag.searchStringRegion = regions;
-            ViewBag.searchStringType = types;
+            ViewBag.Region = regions;
+            ViewBag.Type = types;
             ViewBag.NameSort = sortOrder == "Name" ? "name_desc" : "Name";
             ViewBag.DateSort = String.IsNullOrEmpty(sortOrder) ? "Date_desc" : "";
 
@@ -82,24 +84,6 @@ namespace DSPsafe.Controllers
             }
 
 
-            //var query = from loc in db.Locations
-            //            join inc in db.Incidents on loc.LocationId equals inc.LocationId
-            //            select new
-            //            {
-            //                StaffLast = inc.StaffReportee.LastName,
-            //                Stafffirst = inc.StaffReportee.FirstName,
-            //                Building = loc.Building,
-            //                WhereHappened = inc.LocationId,
-            //                StaffIncident = inc.StaffIncident,
-            //                HomeVisit = inc.HomeVisitIncident,
-            //                Description = inc.BriefDesc,
-            //                DateHappened = inc.DateOccurred,
-            //                TypeIncident = inc.TypeOfIncident,
-            //                Place = loc.Region
-            //            };
-
-            //IEnumerable<object> incidents = query;
-
             switch (searchType)
             {
                 case 1:
@@ -138,15 +122,8 @@ namespace DSPsafe.Controllers
             ViewBag.TypeOfIncident = types;
             ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName");
             ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Region");
-            ViewBag.Region = new SelectList(new[]
-                                          {
-                                              new {ID="North",Name="North"},
-                                              new{ID="South",Name="South"},
-                                              new{ID="East",Name="East"},
-                                              new{ID="West",Name="West"}
-                                          },
-                            "ID", "Name", 1);
-            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Building");
+            ViewBag.Region = regions;
+            ViewBag.Building = new SelectList(db.Locations.Where(i => i.Region.Equals(regions)), "LocationId", "Building");
             return View();
         }
 
@@ -161,12 +138,13 @@ namespace DSPsafe.Controllers
             if (ModelState.IsValid)
             {
                 db.Incidents.Add(incident);
+                sendEmail("Harry", incident);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName", incident.StaffId);
-            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Region", incident.LocationId);
+            //ViewBag.Building = new SelectList(db.Locations, "LocationId", "Region", incident.LocationId);
 
 
             return View(incident);
@@ -252,6 +230,7 @@ namespace DSPsafe.Controllers
         //    return Json(incidents);
         //}
 
+            //Used for populating the drop down list of buildings
         public JsonResult GetBuildings(string region)
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -264,6 +243,7 @@ namespace DSPsafe.Controllers
             return Json(buildingList);
         }
 
+        //Gets the data for the pie chart
         public JsonResult GetData()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -289,6 +269,7 @@ namespace DSPsafe.Controllers
             return Json(emptyList, JsonRequestBehavior.AllowGet);
         }
 
+        //Gets the data for the stacked bar chart
         public JsonResult GetBreakdown()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -305,8 +286,8 @@ namespace DSPsafe.Controllers
             int countAssaultEast = 0, countThreatEast = 0, countSlipEast = 0, countManualEast = 0, countDamageEast = 0;
             int countAssaultWest = 0, countThreatWest = 0, countSlipWest = 0, countManualWest = 0, countDamageWest = 0;
 
-            var emptyList = new List<Tuple<string, int, int, int, int, int, int>>()
-                .Select(t => new { Type = t.Item1, countAssault = t.Item2, countThreat = t.Item3, countSlip = t.Item4, countManual = t.Item5, countDamage = t.Item6 }).ToList();
+            var emptyList = new List<Tuple<string, string, int, int, int, int, int, int>>()
+                .Select(t => new { category = t.Item1, Type = t.Item2, countAssault = t.Item3, countThreat = t.Item4, countSlip = t.Item5, countManual = t.Item6, countDamage = t.Item7}).ToList();
 
             foreach (var line in incidents)
             {
@@ -418,17 +399,20 @@ namespace DSPsafe.Controllers
                     case "North":
                         emptyList.Add(new
                         {
+                            category = "North",
                             Type = s,
                             countAssault = countAssaultNorth,
                             countThreat = countThreatNorth,
                             countSlip = countSlipNorth,
                             countManual = countManualNorth,
                             countDamage = countDamageNorth
+                            
                         });
                         break;
                     case "South":
                         emptyList.Add(new
                         {
+                            category = "South",
                             Type = s,
                             countAssault = countAssaultSouth,
                             countThreat = countThreatSouth,
@@ -440,6 +424,7 @@ namespace DSPsafe.Controllers
                     case "East":
                         emptyList.Add(new
                         {
+                            category = "East",
                             Type = s,
                             countAssault = countAssaultEast,
                             countThreat = countThreatEast,
@@ -451,6 +436,7 @@ namespace DSPsafe.Controllers
                     case "West":
                         emptyList.Add(new
                         {
+                            category = "West",
                             Type = s,
                             countAssault = countAssaultWest,
                             countThreat = countThreatWest,
@@ -459,13 +445,52 @@ namespace DSPsafe.Controllers
                             countDamage = countDamageWest
                         });
                         break;
-                        //new { Type = t.Item1, countAssault = t.Item2, countThreat = t.Item3, countSlip = t.Item4, countManual = t.Item5})
-                        // emptyList.Add(new { typeInc = row.IncidentType, countOf = row.Count });
+                       
                 }
             }
-            //emptyList.Add(new { typeInc = row.IncidentType, countOf = row.Count });
             return Json(emptyList, JsonRequestBehavior.AllowGet);
 
+        }
+
+        //Converts the view to a PDF
+        public ActionResult GeneratePDF()
+        {
+            return new Rotativa.ActionAsPdf("Index");
+        }
+
+
+        //Send email when incident reported
+        public string sendEmail(string mail, Incident reported)
+        {
+            MailMessage msg = new MailMessage();
+
+            msg.From = new MailAddress("YourMail@gmail.com");
+            msg.To.Add("buntmcbunt@gmail.com");
+            msg.Subject = "Health & Safety Incident reported" + DateTime.Now.ToString();
+            //msg.Body = "To whom it concerns, " + reported.StaffReportee.FirstName + " " + reported.StaffReportee.LastName + " reported an incident of type " + reported.TypeOfIncident+ ". The incident occurred at " + reported.WhereHappened.Building + ".";
+            msg.Body = "To whom it concerns, An incident of type " + reported.TypeOfIncident + " has occurred.";
+            msg.Priority = MailPriority.High;
+            SmtpClient client = new SmtpClient();
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+            client.EnableSsl = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("javabraybowl@gmail.com", "DanoBucko");
+            client.Timeout = 20000;
+            try
+            {
+                client.Send(msg);
+                return "Mail has been successfully sent!";
+            }
+            catch (Exception ex)
+            {
+                return "Fail Has error" + ex.Message;
+            }
+            finally
+            {
+                msg.Dispose();
+            }
         }
     }
 }

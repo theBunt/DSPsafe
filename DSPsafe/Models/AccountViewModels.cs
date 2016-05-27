@@ -61,7 +61,7 @@ namespace DSPsafe.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        public virtual Staff Staff { get; set; }
+        //public virtual Staff Staff { get; set; }
     }
 
     public class RegisterViewModel
@@ -81,6 +81,8 @@ namespace DSPsafe.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public virtual Staff Staff { get; set; }
     }
 
     public class ResetPasswordViewModel
@@ -110,5 +112,11 @@ namespace DSPsafe.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class UserRoleViewModel
+    {
+        public ICollection<string> Roles { get; set; }
+        public string EmailAddress { get; set; }
     }
 }
