@@ -12,7 +12,6 @@ using Microsoft.AspNet.Identity;
 
 namespace DSPsafe.Controllers
 {
-    [Authorize(Roles = "Staff, Manager")]
     public class StaffController : Controller
     {
        
@@ -20,7 +19,6 @@ namespace DSPsafe.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Staff
-        
         public ActionResult Index(string Region, string Building, bool? displayAll)
         {
 
