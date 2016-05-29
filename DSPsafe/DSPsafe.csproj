@@ -54,6 +54,10 @@
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Select.HtmlToPdf, Version=2.2.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.2.2.0.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -188,13 +192,9 @@
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="DAL\SafetyInterceptorLogging.cs" />
-    <Compile Include="Migrations\201605262141443_Reset.cs" />
-    <Compile Include="Migrations\201605262141443_Reset.Designer.cs">
-      <DependentUpon>201605262141443_Reset.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605272237347_Users.cs" />
-    <Compile Include="Migrations\201605272237347_Users.Designer.cs">
-      <DependentUpon>201605272237347_Users.cs</DependentUpon>
+    <Compile Include="Migrations\201605272303486_Restore.cs" />
+    <Compile Include="Migrations\201605272303486_Restore.Designer.cs">
+      <DependentUpon>201605272303486_Restore.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -584,7 +584,6 @@
     <Content Include="Images\officeClouds.jpg" />
     <Content Include="Images\reportBanner.jpg" />
     <Content Include="Images\safetyBanner.jpg" />
-    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\JavaScriptEffects.js" />
@@ -664,11 +663,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605262141443_Reset.resx">
-      <DependentUpon>201605262141443_Reset.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605272237347_Users.resx">
-      <DependentUpon>201605272237347_Users.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605272303486_Restore.resx">
+      <DependentUpon>201605272303486_Restore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -705,7 +701,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Select.HtmlToPdf.2.2.0.0\build\Select.HtmlToPdf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Select.HtmlToPdf.2.2.0.0\build\Select.HtmlToPdf.targets'))" />
   </Target>
+  <Import Project="..\packages\Select.HtmlToPdf.2.2.0.0\build\Select.HtmlToPdf.targets" Condition="Exists('..\packages\Select.HtmlToPdf.2.2.0.0\build\Select.HtmlToPdf.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

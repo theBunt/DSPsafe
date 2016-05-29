@@ -10,7 +10,9 @@ namespace DSPsafe.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public int? StaffId { get; internal set; }
+        public int? StaffId { get; set; }
+
+        public virtual Staff Staff { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -25,6 +27,7 @@ namespace DSPsafe.Models
     {
         public ApplicationDbContext()
             : base("AzureConnection", throwIfV1Schema: false)
+            //: base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 

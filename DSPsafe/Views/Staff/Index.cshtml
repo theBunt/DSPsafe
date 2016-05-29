@@ -7,57 +7,57 @@
 <h2>Find your safety contact</h2>
 
 @*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 
 <p>Find out who is looking after your safety.<br /> Just select your region and building below to view your safety representatives.</p>
-    
-    @using (Html.BeginForm("Index", "Staff", FormMethod.Get))
-    {
-        @*<div class="form-group">
+
+@using (Html.BeginForm("Index", "Staff", FormMethod.Get))
+{
+    @*<div class="form-group">
             @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
         </div>*@
-        <div class="form-horizontal">
-           
-            <div class="form-group">
-                @Html.Label("Select your Region:", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @*@Html.DropDownList("Region", "Select Region")*@
-                    @Html.DropDownList("Region", (IEnumerable<SelectListItem>)ViewBag.Region, "choose region...", new { @class = "form-control" })
-                </div>
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.Label("Select your Region:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("Region", "Select Region")*@
+                @Html.DropDownList("Region", (IEnumerable<SelectListItem>)ViewBag.Region, "choose region...", new { @class = "form-control" })
             </div>
-
-
-            
-                <div class="form-group ">
-                    @Html.Label("Find by Building:", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @*@Html.DropDownList("Building", "Select Building")*@
-                        @Html.DropDownList("Building", (IEnumerable<SelectListItem>)ViewBag.Building, "choose building...", new { @class = "form-control" })
-                        <br /><input type="submit" value="Search" />
-                    </div>
-                   
-                </div>
-            
-
-           
         </div>
 
-                @*if (TempData["Error"] != null)
+
+
+        <div class="form-group ">
+            @Html.Label("Find by Building:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("Building", "Select Building")*@
+                @Html.DropDownList("Building", (IEnumerable<SelectListItem>)ViewBag.Building, "choose building...", new { @class = "form-control" })
+                <br /><input type="submit" value="Search" />
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+        @*if (TempData["Error"] != null)
             {
             <p style="color: red">@TempData["Error"]</p>
 
             }
 
             }*@
-      
-         }   
-            
-    
+
+
+
+
 <table class="table">
     @if (Model != null)
     {
@@ -105,17 +105,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Area)
                 </td>
-
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.StaffId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.StaffId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.StaffId })
-                </td>
+                @if (User.IsInRole("Manager"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.StaffId }) 
+                        @*@Html.ActionLink("Details", "Details", new { id = item.StaffId }) |*@
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.StaffId })*@
+                    </td>
+                }
             </tr>
         }
+      
     }
 
 </table>
+
+} @*end form*@ 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -146,4 +151,11 @@
             })
         });
     </script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Region").change(function ()
+    }
+</script>
 }

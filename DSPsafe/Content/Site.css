@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.datagrid table {
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+}
+
+

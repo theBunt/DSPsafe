@@ -8,16 +8,18 @@ using System.Web;
 using System.Web.Mvc;
 using DSPsafe.DAL;
 using DSPsafe.Models;
+using Microsoft.AspNet.Identity;
 
 namespace DSPsafe.Controllers
 {
     public class StaffController : Controller
     {
+       
         //private SafetyContext db = new SafetyContext();
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Staff
-        public ActionResult Index(string Region, string Building)
+        public ActionResult Index(string Region, string Building, bool? displayAll)
         {
 
             ViewBag.Region = new SelectList(new[]
@@ -37,8 +39,10 @@ namespace DSPsafe.Controllers
                 var staff = from s in db.Staff select s;
 
                 int locId = int.Parse(Building);
-                staff = staff.Where(s => s.LocationId.Equals(locId));
-
+                if(User.IsInRole("Manager"))
+                    staff = staff.Where(s => s.LocationId.Equals(locId));
+                else
+                    staff = staff.Where(s => s.LocationId.Equals(locId) && !string.IsNullOrEmpty(s.SafetyRole));
                 return View(staff.ToList());
             }
 

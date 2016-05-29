@@ -67,6 +67,9 @@ C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Microsof
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.dll
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.pdb
-C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.Migrations.Reset.resources
-C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.csproj.GenerateResource.Cache
 C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Rotativa.dll
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.Migrations.Restore.resources
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\obj\Debug\DSPsafe.csproj.GenerateResource.Cache
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Select.Html.dep
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Select.HtmlToPdf.dll
+C:\Users\User\documents\visual studio 2015\Projects\DSPsafe\DSPsafe\bin\Select.HtmlToPdf.xml

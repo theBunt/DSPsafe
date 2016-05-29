@@ -9,6 +9,10 @@ using System.Web.Mvc;
 using DSPsafe.DAL;
 using DSPsafe.Models;
 using System.Net.Mail;
+using SelectPdf;
+using System.Web.UI.WebControls;
+using System.Web.Security;
+using Microsoft.AspNet.Identity;
 
 namespace DSPsafe.Controllers
 {
@@ -44,6 +48,7 @@ namespace DSPsafe.Controllers
             var incidents = db.Incidents.Include(i => i.StaffReportee).Include(i => i.WhereHappened);
             ViewBag.Region = regions;
             ViewBag.Type = types;
+            ViewBag.Building = new SelectList(db.Locations.Include(i => i.LocationId).Where(i => i.Region.Equals(searchStringRegion)), "LocationId", "Building");
             ViewBag.NameSort = sortOrder == "Name" ? "name_desc" : "Name";
             ViewBag.DateSort = String.IsNullOrEmpty(sortOrder) ? "Date_desc" : "";
 
@@ -120,10 +125,11 @@ namespace DSPsafe.Controllers
         public ActionResult Create()
         {
             ViewBag.TypeOfIncident = types;
-            ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName");
+            //ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName");
             ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Region");
             ViewBag.Region = regions;
-            ViewBag.Building = new SelectList(db.Locations.Where(i => i.Region.Equals(regions)), "LocationId", "Building");
+            // ViewBag.Building = new SelectList(db.Locations.Where(i => i.Region.Equals(regions)), "LocationId", "Building");
+            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Building");
             return View();
         }
 
@@ -132,11 +138,14 @@ namespace DSPsafe.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,StaffId,LocationId")] Incident incident)
-        public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,LocationId")] Incident incident)
+        public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,StaffId,LocationId")] Incident incident)
+        //public ActionResult Create([Bind(Include = "IncidentId,TypeOfIncident,StaffIncident,HomeVisitIncident,BriefDesc,DateOccurred,LocationId")] Incident incident)
         {
             if (ModelState.IsValid)
             {
+                var manager = new UserManager<ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var user = manager.FindById(User.Identity.GetUserId());
+                incident.StaffId = user.StaffId.Value;
                 db.Incidents.Add(incident);
                 sendEmail("Harry", incident);
                 db.SaveChanges();
@@ -220,15 +229,6 @@ namespace DSPsafe.Controllers
             base.Dispose(disposing);
         }
 
-        //public JsonResult GetData()
-        //{
-        //    db.Configuration.ProxyCreationEnabled = false;
-        //    var query = from d in db.Incidents
-        //                select d;
-
-        //    IEnumerable<Incident> incidents = query;
-        //    return Json(incidents);
-        //}
 
             //Used for populating the drop down list of buildings
         public JsonResult GetBuildings(string region)
@@ -452,12 +452,47 @@ namespace DSPsafe.Controllers
 
         }
 
-        //Converts the view to a PDF
-        public ActionResult GeneratePDF()
-        {
-            return new Rotativa.ActionAsPdf("Index");
-        }
+        ////Converts the view to a PDF
+        //public ActionResult GeneratePDF(string sortOrder, string searchStringRegion, string searchStringType)
+        //{
+        //    IQueryable<Incident> myList = getIncidentList(sortOrder, searchStringRegion, searchStringType);
+        //    return new Rotativa.ActionAsPdf("Index", myList);
+        //}
 
+        //public ActionResult PDF()
+        //{
+        //    return new Rotativa.ActionAsPdf("Index");
+        //}
+
+        //public ActionResult DownloadPartialViewPDF(string sortOrder, string searchStringRegion, string searchStringType)
+        //{
+        //    var model = GeneratePDF(sortOrder, searchStringRegion, searchStringType);
+        //    //Code to get content
+        //    return new Rotativa.PartialViewAsPdf("_incidentTable", model) { FileName = "TestPartialViewAsPdf.pdf" };
+        //}
+
+
+        public ActionResult ExportData(string sortOrder, string searchStringRegion, string searchStringType)
+        {
+            GridView gv = new GridView();
+            // gv.DataSource = getIncidentList(sortOrder, searchStringRegion, searchStringType);
+            gv.DataSource = db.Incidents.Include(i => i.StaffReportee).Include(i => i.WhereHappened).ToList();
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            string time = DateTime.Now.ToShortTimeString();
+            Response.AddHeader("content-disposition", "attachment; filename=Incidentlist"+time+".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Web.UI.HtmlTextWriter htw = new System.Web.UI.HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+
+            return RedirectToAction("Index");
+        }
 
         //Send email when incident reported
         public string sendEmail(string mail, Incident reported)
@@ -491,6 +526,69 @@ namespace DSPsafe.Controllers
             {
                 msg.Dispose();
             }
+        }
+
+        public IQueryable<Incident> getIncidentList(string sortOrder, string searchStringRegion, string searchStringType)
+        {
+            var incidents = db.Incidents.Include(i => i.StaffReportee).Include(i => i.WhereHappened);
+            ViewBag.Region = regions;
+            ViewBag.Type = types;
+            ViewBag.NameSort = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.DateSort = String.IsNullOrEmpty(sortOrder) ? "Date_desc" : "";
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    incidents = incidents.OrderByDescending(i => i.StaffReportee.LastName);
+                    break;
+                case "Name":
+                    incidents = incidents.OrderBy(i => i.StaffReportee.LastName);
+                    break;
+                case "Date":
+                    incidents = incidents.OrderByDescending(i => i.DateOccurred);
+                    break;
+                default:
+                    incidents = incidents.OrderBy(i => i.DateOccurred);
+                    break;
+            }
+
+            var searchString = "";
+            var searchType = 0;
+
+            if (!String.IsNullOrEmpty(searchStringRegion) && String.IsNullOrEmpty(searchStringType))
+            {
+                searchString = searchStringRegion.ToString();
+                searchType = 1;
+            }
+            else if (String.IsNullOrEmpty(searchStringRegion) && !String.IsNullOrEmpty(searchStringType))
+            {
+                searchString = searchStringType.ToString();
+                searchType = 2;
+            }
+            else if (!String.IsNullOrEmpty(searchStringRegion) && !String.IsNullOrEmpty(searchStringType))
+            {
+                searchString = (searchStringRegion + "," + searchStringType).ToString();
+                searchType = 3;
+            }
+
+
+            switch (searchType)
+            {
+                case 1:
+                    incidents = incidents.Where(i => i.WhereHappened.Region.Equals(searchStringRegion));
+                    break;
+
+                case 2:
+                    incidents = incidents.Where(i => i.TypeOfIncident.Equals(searchStringType));
+                    break;
+
+                case 3:
+                    incidents = incidents.Where(i => i.WhereHappened.Region.Equals(searchStringRegion) && (i.TypeOfIncident.Equals(searchStringType)));
+                    break;
+            }
+
+            return incidents;
         }
     }
 }
