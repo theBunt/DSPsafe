@@ -7,9 +7,9 @@
 
 <h2>Incident Report Page</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 
 
 
@@ -24,7 +24,7 @@
     <br />
 
 
-    <div id="IncTable">
+    <div id="IncTable" hidden>
         @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
         {
             <p>
