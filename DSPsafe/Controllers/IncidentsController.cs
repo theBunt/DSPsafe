@@ -107,6 +107,7 @@ namespace DSPsafe.Controllers
         }
 
         // GET: Incidents/Details/5
+        [Authorize(Roles = "Manager")]
         public ActionResult Details(int? id)
         {
             if (id == null)
