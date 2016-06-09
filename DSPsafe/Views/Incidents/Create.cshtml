@@ -48,7 +48,7 @@
 
                 @*@Html.DropDownList("Building", "Select Building")*@
 
-                @Html.DropDownListFor(model => model.LocationId, (SelectList)ViewBag.Building, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.LocationId, (SelectList)ViewBag.LocationId, htmlAttributes: new { @class = "form-control" })
                 @*@Html.DropDownList("Building", (IEnumerable<SelectListItem>)ViewBag.Building, "choose building...", new { @class = "form-control" })*@
                 @*@Html.DropDownList("Building",null, "choose building...", new { @class = "form-control" })*@
             </div>
@@ -170,7 +170,7 @@
                     success: function (buildingList) {
 
                         $.each(buildingList, function (i, locale) {
-                            $("#Building").append('<option value ="'
+                            $("#LocationId").append('<option value ="'
                             + locale.LocationId + '">'
                                 + locale.Building + ' </option>');
                         });

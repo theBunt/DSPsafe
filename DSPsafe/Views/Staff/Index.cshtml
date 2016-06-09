@@ -47,16 +47,6 @@
 
     </div>
 
-        @*if (TempData["Error"] != null)
-            {
-            <p style="color: red">@TempData["Error"]</p>
-
-            }
-
-            }*@
-
-
-
 
 <table class="table">
     @if (Model != null)
@@ -109,8 +99,7 @@
                 {
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.StaffId }) 
-                        @*@Html.ActionLink("Details", "Details", new { id = item.StaffId }) |*@
-                        @*@Html.ActionLink("Delete", "Delete", new { id = item.StaffId })*@
+                      
                     </td>
                 }
             </tr>
@@ -125,6 +114,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    @*calls the GetBuildings function in the controller when region changes*@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#Region").change(function () {

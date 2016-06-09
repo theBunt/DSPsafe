@@ -49,7 +49,15 @@
 }
 
 .carousel-overlay h1 {
-    color:#000;
-    text-shadow:#7a7a7a 4px 3px 0;
+    color:black;
+    text-shadow:#a8b6b7 4px 3px 0;
     font-size: 660%;
+    text-align: center;
+}
+
+.carousel-overlay h2 {
+    color:#ffd800;
+    text-shadow:#411414 4px 1px 0;
+    font-size: 290%;
+    text-align: center;
 }

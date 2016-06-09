@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using DSPsafe.DAL;
+//using DSPsafe.DAL;
 using DSPsafe.Models;
 using System.Net.Mail;
 using SelectPdf;
@@ -26,7 +26,7 @@ namespace DSPsafe.Controllers
                                               new {ID="Damage",Name="Damage"},
                                               new{ID="Assault",Name="Assault"},
                                               new{ID="Threat",Name="Threat"},
-                                              new {ID="Slip/Trip/Fall",Name="Slip/Trip/Fall"},
+                                              new {ID="Slip",Name="Slip"},
                                               new{ID="Manual Handling",Name="Manual Handling"}
                                           },
                             "ID", "Name", 1);
@@ -107,6 +107,7 @@ namespace DSPsafe.Controllers
         }
 
         // GET: Incidents/Details/5
+        [Authorize(Roles = "Manager")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -122,14 +123,15 @@ namespace DSPsafe.Controllers
         }
 
         // GET: Incidents/Create
+        [Authorize(Roles = "Staff, Manager")]
         public ActionResult Create()
         {
             ViewBag.TypeOfIncident = types;
             //ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName");
-            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Region");
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "Building");
             ViewBag.Region = regions;
             // ViewBag.Building = new SelectList(db.Locations.Where(i => i.Region.Equals(regions)), "LocationId", "Building");
-            ViewBag.Building = new SelectList(db.Locations, "LocationId", "Building");
+            // ViewBag.Building = new SelectList(db.Locations, "LocationId", "Building");
             return View();
         }
 
@@ -149,17 +151,18 @@ namespace DSPsafe.Controllers
                 db.Incidents.Add(incident);
                 sendEmail("Harry", incident);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = incident.IncidentId });
             }
 
             ViewBag.StaffId = new SelectList(db.Staff, "StaffId", "LastName", incident.StaffId);
-            //ViewBag.Building = new SelectList(db.Locations, "LocationId", "Region", incident.LocationId);
+           
 
 
             return View(incident);
         }
 
         // GET: Incidents/Edit/5
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -230,7 +233,7 @@ namespace DSPsafe.Controllers
         }
 
 
-            //Used for populating the drop down list of buildings
+        //Used for populating the drop down list of buildings
         public JsonResult GetBuildings(string region)
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -253,8 +256,7 @@ namespace DSPsafe.Controllers
             IEnumerable<Incident> incidents = query;
             var emptyList = new List<Tuple<string, int>>()
                 .Select(t => new { typeInc = t.Item1, countOf = t.Item2 }).ToList();
-            //var emptyList = new List<object>()
-            //    .Select(t => new { })
+           
             foreach (var row in incidents.GroupBy(info => info.TypeOfIncident)
                 .Select(group => new
                 {
@@ -269,7 +271,8 @@ namespace DSPsafe.Controllers
             return Json(emptyList, JsonRequestBehavior.AllowGet);
         }
 
-        //Gets the data for the stacked bar chart
+        // Gets the data for the stacked bar chart
+        // counts the type of incident in each region
         public JsonResult GetBreakdown()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -293,7 +296,7 @@ namespace DSPsafe.Controllers
             {
                 toExtract = line.ToString();
                 words = toExtract.Split(' ');
-                //what = words[0];
+               
                 int lastword = (words.Length - 2);
                 region = words[lastword];
                 if (toExtract.Contains("Assault"))
@@ -388,9 +391,7 @@ namespace DSPsafe.Controllers
                 }
             }
             string[] regions = new string[] { "North", "South", "East", "West" };
-            //string[] regions = new string[] { "Assault", "Threat", "Manual Handling", "Damage", "Slip" };
-            //int[] counts = new int[] { countAssault, countThreat, , countManual, countDamage, countSlip };
-
+           
             foreach (string s in regions)
             {
                 region = s;
@@ -452,6 +453,14 @@ namespace DSPsafe.Controllers
 
         }
 
+        // CODE WAS INTENDED TO GENERATE A PDF FROM A VIEW BUT WAS OMITTED FROM FINAL PROJECT
+        // WORKED FINE ON LOCALHOST BUT HAD ISSUES WHEN PUBLISHED ON AZURE
+
+        //public ActionResult PDF()
+        //{
+        //    return new Rotativa.ActionAsPdf("Index");
+        //}
+
         ////Converts the view to a PDF
         //public ActionResult GeneratePDF(string sortOrder, string searchStringRegion, string searchStringType)
         //{
@@ -459,10 +468,6 @@ namespace DSPsafe.Controllers
         //    return new Rotativa.ActionAsPdf("Index", myList);
         //}
 
-        //public ActionResult PDF()
-        //{
-        //    return new Rotativa.ActionAsPdf("Index");
-        //}
 
         //public ActionResult DownloadPartialViewPDF(string sortOrder, string searchStringRegion, string searchStringType)
         //{
@@ -471,7 +476,7 @@ namespace DSPsafe.Controllers
         //    return new Rotativa.PartialViewAsPdf("_incidentTable", model) { FileName = "TestPartialViewAsPdf.pdf" };
         //}
 
-
+        // Creates an excel document from the incidents data
         public ActionResult ExportData(string sortOrder, string searchStringRegion, string searchStringType)
         {
             GridView gv = new GridView();

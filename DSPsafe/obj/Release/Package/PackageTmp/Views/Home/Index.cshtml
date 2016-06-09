@@ -5,49 +5,46 @@
 }
 
 
-    @*<h1>Health &amp; Safety</h1>
-        <p class="lead">Welcome to DSP Health &amp; Safety page.</p>*@
-    <!--begin bg-carousel-->
-    <div id="bg-fade-carousel" class="carousel slide carousel-fade" data-ride="carousel">
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="slide1"></div>
-            </div>
-            <div class="item">
-                <div class="slide2"></div>
-            </div>
-            <div class="item">
-                <div class="slide3"></div>
-            </div>
-        </div><!-- .carousel-inner -->
-        <div class="container carousel-overlay text-center">
-            <h1>Health &amp; Safety</h1>
-            @*<p class="lead">Welcome to DSP safety website.</p>
-            <a class="btn btn-lg btn-success fp-buttons" href="#">
-                <span class="fa fa-dollar"></span> Hello
-            </a>
-            <a class="btn btn-lg btn-success fp-buttons" href="#">
-                <span class="fa fa-check"></span> Sign Up
-            </a>*@
+@*<h1>Health &amp; Safety</h1>
+    <p class="lead">Welcome to DSP Health &amp; Safety page.</p>*@
+<!--begin bg-carousel-->
+<div id="bg-fade-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <div class="slide1"></div>
         </div>
-    </div><!-- .carousel -->
-    <!--end bg-carousel-->
+        <div class="item">
+            <div class="slide2"></div>
+        </div>
+        <div class="item">
+            <div class="slide3"></div>
+        </div>
+    </div><!-- .carousel-inner -->
+    <div class="carousel-overlay">
+        <h1>Health &amp; Safety</h1>
+        <h2>Your Safety is our priority</h2>
+    </div>
+</div><!-- .carousel -->
+<!--end bg-carousel-->
 
 
 
 <div class="row">
     <div class="col-md-4">
         <h2>Report an incident</h2>
-        <p>Your saftey in the workplace is our priority. In order to mantain the highest standards we need to be notified of any incidents which may require attention</p>
-        <p>@Html.ActionLink("Report an Incident", "Create", "Incidents", null, new { @class = "btn btn-primary", @style = "color:white" })</p>
+        <p>Your safety in the workplace is our priority. In order to mantain the highest standards we need to be notified of any incidents which may require attention</p>
+        <p>
+            @Html.ActionLink("Report an Incident", "Create", "Incidents", null, new { @class = "btn btn-primary", @style = "color:white", data_toggle = "popover", data_trigger = "hover", data_content = "You must be logged in to report an incident" })
+        </p>
+        <p></p>
     </div>
     <div class="col-md-4">
         <h2>Find your Safety Officer</h2>
-        <p>Your building has assigned employees to specific roles for your saftey. To get in contact with your designated safety representatives visit here </p>
+        <p>Your building has assigned employees to specific roles for your safety. To get in contact with your designated safety representatives visit here </p>
         <p>
-            @*<a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866"> &raquo;</a>*@
-            @Html.ActionLink("Find my rep", "Index", "Staff", null, new { @class = "btn btn-primary", @style = "color:white" })
+            @Html.ActionLink("Find my rep", "Index", "Staff", null, new { @class = "btn btn-primary", @style = "color:white", data_toggle = "popover", data_trigger = "hover", data_content = "You must be logged in to view staff details" })
+
         </p>
     </div>
     <div class="col-md-4">
@@ -58,10 +55,8 @@
     </div>
 </div>
 
-@*<script>$('.carousel').carousel()</script>*@
-@*<script>
-   
-    $('.carousel').carousel({
-        interval: 2000 
-    })
-</script>*@
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+</script>

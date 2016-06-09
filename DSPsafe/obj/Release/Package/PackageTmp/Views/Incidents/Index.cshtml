@@ -8,23 +8,23 @@
 <h2>Incident Report Page</h2>
 
 @*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
+    @Html.ActionLink("Create New", "Create")
+</p>*@
 
 
 
 @*<div>
-     @Html.Partial("_incidentTable", Model.AsEnumerable())
-</div>*@
+         @Html.Partial("_incidentTable", Model.AsEnumerable())
+    </div>*@
 
-@if (!User.IsInRole("Manager"))
+@if (User.IsInRole("Manager"))
 {
 
     <button id="tableBtn" type="button" class="btn btn-info btn-block" onclick="viewTable()">CLICK HERE to view Table of Incidents</button>
     <br />
 
 
-    <div id="IncTable">
+    <div id="IncTable" hidden>
         @using (Html.BeginForm("Index", "Incidents", FormMethod.Get))
         {
             <p>
@@ -36,18 +36,18 @@
 
                 <input type="submit" value="Search" />
             </p>
-                @*@if (TempData["Error"] != null)
+            @*@if (TempData["Error"] != null)
                     {
                 <p style="color:red">@TempData["Error"]</p>
 
                 }*@
-                
+
         }
 
         <table id="IncidentTable " class="table">
             <tr>
                 <th>
-                   
+
                     @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSort })
                 </th>
                 <th>
@@ -62,9 +62,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.HomeVisitIncident)
                 </th>
-               
+
                 <th>
-                   
+
                     @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
                 </th>
                 <th></th>
@@ -88,13 +88,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.HomeVisitIncident)
                     </td>
-                   
+
                     <td>
                         @Html.DisplayFor(modelItem => item.DateOccurred)
                     </td>
                     <td>
                         @*@Html.ActionLink("Edit", "Edit", new { id = item.IncidentId }) |*@
-                        @Html.ActionLink("Details", "Details", new { id = item.IncidentId }) 
+                        @Html.ActionLink("Details", "Details", new { id = item.IncidentId })
                         @*@Html.ActionLink("Delete", "Delete", new { id = item.IncidentId })*@
                     </td>
                 </tr>
@@ -102,9 +102,9 @@
 
         </table>
 
-        @Html.ActionLink("Print", "PDF")
+        <input type="hidden" name="theURL" value="">
         @*@Html.ActionLink("Print", "DownloadPartialViewPDF", new { sortOrder = ViewBag.DateSort, searchStringRegion = ViewBag.Region, searchStringType  = ViewBag.type})*@
-        
+        @Html.ActionLink("Export to Excel", "ExportData", new { sortOrder = ViewBag.DateSort, searchStringRegion = ViewBag.Region, searchStringType = ViewBag.type })
     </div>
 }
 
@@ -112,7 +112,7 @@
     <div class="col-sm-8">
         <div id="chartdiv" style="width: 640px; height: 400px;" hidden></div>
         <button id="pieBtn" type="button" class="btn btn-info btn-block" onclick="viewPie()">CLICK HERE to view Incidents Pie Chart</button>
-       
+
     </div>
 </div>
 <br />
@@ -120,12 +120,13 @@
     <div class="col-sm-8">
         <div id="chartRegion" style="width: 640px; height: 400px;" hidden></div>
         <button id="barBtn" type="button" class="btn btn-info btn-block" onclick="viewBar()">CLICK HERE to view Regional Breakdown Chart</button>
-        
+
     </div>
 </div>
 <br />
 
-@section Scripts {
+@section Scripts
+        {
     @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">
@@ -156,28 +157,35 @@
     </script>
 }
 
+<script>
+    function getUrl() {
+        var x = document.URL;
+        $('theURL').val(x);
+    }
+</script>
+
 @*<script type="text/javascript">
-    AmCharts.makeChart("chartdiv",
-        {
-            "type": "pie",
-            "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-            "titleField": "typeInc",
-            "valueField": "countOf",
-            "allLabels": [],
-            "balloon": {},
-            "legend": {
-                "enabled": true,
-                "align": "center",
-                "markerType": "circle"
-            },
-            "titles": [],
-            "dataLoader": {
-                "url": '@Url.Action("GetData")',
-                "format": "json"
+        AmCharts.makeChart("chartdiv",
+            {
+                "type": "pie",
+                "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                "titleField": "typeInc",
+                "valueField": "countOf",
+                "allLabels": [],
+                "balloon": {},
+                "legend": {
+                    "enabled": true,
+                    "align": "center",
+                    "markerType": "circle"
+                },
+                "titles": [],
+                "dataLoader": {
+                    "url": '@Url.Action("GetData")',
+                    "format": "json"
+                }
             }
-        }
-    );
-</script>*@
+        );
+    </script>*@
 
 <script type="text/javascript">
     @*AmCharts.makeChart("chartRegion",

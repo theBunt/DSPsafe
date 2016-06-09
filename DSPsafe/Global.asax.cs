@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using DSPsafe.DAL;
+//using DSPsafe.DAL;
 using System.Data.Entity.Infrastructure.Interception;
 using System.Data.Entity;
 
@@ -19,9 +19,9 @@ namespace DSPsafe
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            DbInterception.Add(new SafetyInterceptorTransientErrors());
-            DbInterception.Add(new SafetyInterceptorLogging());
-            Database.SetInitializer(new DropCreateDatabaseAlways<SafetyContext>());
+            //DbInterception.Add(new SafetyInterceptorTransientErrors());
+            //DbInterception.Add(new SafetyInterceptorLogging());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<SafetyContext>());
         }
     }
 }

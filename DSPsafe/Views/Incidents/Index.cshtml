@@ -5,6 +5,13 @@
     ViewBag.Title = "Incidents";
 }
 
+@section Amcharts {
+    @Scripts.Render("~/amcharts/amcharts.js")
+    @Scripts.Render("~/amcharts/serial.js")
+    @Scripts.Render("~/amcharts/pie.js")
+    @Scripts.Render("~/amcharts/plugins/dataloader/dataloader.min.js")
+}
+
 <h2>Incident Report Page</h2>
 
 @*<p>

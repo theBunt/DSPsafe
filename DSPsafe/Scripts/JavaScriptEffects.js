@@ -1,14 +1,21 @@
-﻿$('.carousel').carousel({
+﻿// code to alter the image on the home screen, 3 images every 6 seconds
+$('.carousel').carousel({
     interval: 1800 // in milliseconds  
 })
 
+// show & hide toggle for the pie chart
 function viewPie() {
     $("#chartdiv").slideToggle(600);
+    // delay of 650 ms to allow time for the div to open before populating the chart data
+    // otherwise the animations would be finished before the div is finished opening
     setTimeout(generatePie, 650);   
 }
 
+// show & hide toggle for the bar chart
 function viewBar() {
     $("#chartRegion").slideToggle(600);
+    // delay of 650 ms to allow time for the div to open before populating the chart data
+    // otherwise the animations would be finished before the div is finished opening
     setTimeout(generateStackedChart, 550);
 }
 
@@ -16,6 +23,7 @@ function viewTable() {
     $("#IncTable").slideToggle(600);
 }
 
+// this is the function to change the icon image when you submit an incident report
 function changeIcon() {
     var type = $("#typeForIcon").val();
     $("#displayIncident").text(type);
@@ -39,6 +47,7 @@ function changeIcon() {
     $('#myModal').modal('show');
 }
 
+// populates the pie chart by making an call to the GetData function in the Incidents controller
 function generatePie() {
     var myUrl = "Incidents/GetData"
     AmCharts.makeChart("chartdiv",
@@ -56,7 +65,7 @@ function generatePie() {
            },
            "titles": [],
            "dataLoader": {
-               "url": myUrl,
+               "url": myUrl, // controller function call
                "format": "json"
            }
        }
@@ -149,7 +158,7 @@ function generateStackedChart() {
                         }
                     ],
                     "dataLoader": {
-                        "url": myUrl,
+                        "url": myUrl, // controller function call
                         "format": "json"
                     }
                 }

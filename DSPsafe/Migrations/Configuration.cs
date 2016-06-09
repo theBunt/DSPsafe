@@ -166,6 +166,7 @@ namespace DSPsafe.Migrations
             context.SaveChanges();
         }
 
+        // Adding Staff role to existing staff of type staff
         public void CreateManagerRoleAndPopuate(ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
@@ -186,7 +187,7 @@ namespace DSPsafe.Migrations
                         StaffId = staff.StaffId,
                         UserName = staff.Email,
                         Email = staff.Email,
-                        PasswordHash = pass.HashPassword("PassWord1'"),
+                        PasswordHash = pass.HashPassword("PassWord1'"), //be aware of the single quotation if cutting and pasting the password
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
                     user.Roles.Add(new IdentityUserRole { RoleId = userRole.Id, UserId = user.Id });
@@ -196,6 +197,7 @@ namespace DSPsafe.Migrations
             }
         }
 
+        // Adding Manager role to existing staff of type mngr
         public void CreateStaffRoleAndPopulate(ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
@@ -216,7 +218,7 @@ namespace DSPsafe.Migrations
                         StaffId = staff.StaffId,
                         UserName = staff.Email,
                         Email = staff.Email,
-                        PasswordHash = pass.HashPassword("PassWord1'"),
+                        PasswordHash = pass.HashPassword("PassWord1'"), //be aware of the single quotation if cutting and pasting the password
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
                     user.Roles.Add(new IdentityUserRole { RoleId = userRole.Id, UserId = user.Id });

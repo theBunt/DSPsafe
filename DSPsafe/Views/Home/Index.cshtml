@@ -1,4 +1,5 @@
-﻿
+﻿<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="js/newsTicker.js"></script>
 
 @{
     ViewBag.Title = "Home Page";
@@ -21,33 +22,29 @@
             <div class="slide3"></div>
         </div>
     </div><!-- .carousel-inner -->
-    <div class="container carousel-overlay text-center">
+    <div class="carousel-overlay">
         <h1>Health &amp; Safety</h1>
+        <h2>Your Safety is our priority</h2>
     </div>
 </div><!-- .carousel -->
 <!--end bg-carousel-->
-
 
 
 <div class="row">
     <div class="col-md-4">
         <h2>Report an incident</h2>
         <p>Your safety in the workplace is our priority. In order to mantain the highest standards we need to be notified of any incidents which may require attention</p>
-        <p>@Html.ActionLink("Report an Incident", "Create", "Incidents", null, new { @class = "btn btn-primary", @style = "color:white" })</p>
+        <p>
+            @Html.ActionLink("Report an Incident", "Create", "Incidents", null, new { @class = "btn btn-primary", @style = "color:white", data_toggle = "popover", data_trigger = "hover", data_content = "You must be logged in to report an incident" })
+        </p>
+        <p></p>
     </div>
     <div class="col-md-4">
         <h2>Find your Safety Officer</h2>
         <p>Your building has assigned employees to specific roles for your safety. To get in contact with your designated safety representatives visit here </p>
         <p>
-            @*<a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866"> &raquo;</a>*@
-            @if ((User.IsInRole("Manager")) || (User.IsInRole("Staff")))
-            {
-                @Html.ActionLink("Find my rep", "Index", "Staff", null, new { @class = "btn btn-primary", @style = "color:white" })
-            }
-            else
-            {
-                <button class = "btn btn-secondary-outline" data-toggle="popover" data-trigger="hover" data-content="You must be logged in to report an incident">Find my rep</button>
-            }
+            @Html.ActionLink("Find my rep", "Index", "Staff", null, new { @class = "btn btn-primary", @style = "color:white", data_toggle = "popover", data_trigger = "hover", data_content = "You must be logged in to view staff details" })
+
         </p>
     </div>
     <div class="col-md-4">
@@ -59,7 +56,8 @@
 </div>
 
 <script>
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover();
-});
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
 </script>
+

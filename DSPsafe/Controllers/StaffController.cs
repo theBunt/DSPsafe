@@ -6,12 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using DSPsafe.DAL;
+//using DSPsafe.DAL;
 using DSPsafe.Models;
 using Microsoft.AspNet.Identity;
 
 namespace DSPsafe.Controllers
 {
+    [Authorize(Roles = "Staff, Manager")]
     public class StaffController : Controller
     {
        
@@ -161,6 +162,7 @@ namespace DSPsafe.Controllers
             base.Dispose(disposing);
         }
 
+        // Filters the drop down list of buildings when the region list is changed
         public JsonResult GetBuildings(string region)
         {
             db.Configuration.ProxyCreationEnabled = false;
